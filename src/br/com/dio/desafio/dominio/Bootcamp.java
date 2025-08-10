@@ -1,10 +1,8 @@
 package br.com.dio.desafio.dominio;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Bootcamp {
     private String nome;
@@ -54,6 +52,23 @@ public class Bootcamp {
     public void setConteudos(Set<Conteudo> conteudos) {
         this.conteudos = conteudos;
     }
+
+    public void lerRanking(){
+        List<Dev> ranking = devsInscritos.stream()
+                .filter(dev -> dev.getConteudosConcluidos().containsAll(conteudos))
+                .sorted(Comparator.comparingDouble(Dev::calcularTotalXp).reversed())
+                .toList();
+
+        int posicao = 1;
+        for(Dev dev : ranking){
+            System.out.print(posicao + " - " + dev.getNome() + "(XP: " + dev.calcularTotalXp() + ")" );
+        }
+    }
+
+
+
+
+
 
     @Override
     public boolean equals(Object o) {
